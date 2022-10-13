@@ -1,38 +1,56 @@
-import { View, Text, StyleSheet } from 'react-native';
-import yelpAPI from '../../api/yelp';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ActivityIndicator,
+  FlatList,
+} from 'react-native'
+import useRestaurants from '../../hooks/useRestaurants'
+import { useEffect } from 'react'
+import Restaurant from '../Restaurant'
 
-export default function Restaurants() {
-  const searchRestaurants = async () => {
-    const res = await yelpAPI.get('/search', {
-      params: {
-        limit: 15,
-        term: 'Dessert',
-        location: 'Toronto',
-      },
-    });
-    console.log(res);
-  };
+export default function Restaurants(term) {
+  const [{ data, loading, error }, searchRestaurants] = useRestaurants()
 
-  searchRestaurants();
+  useEffect(() => {
+    searchRestaurants(term)
+  }, [term])
+
+  if (loading) {
+    return <ActivityIndicator size="large" marginVertical={30} />
+  }
+
+  if (error) {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.header}>{error}</Text>
+      </View>
+    )
+  }
 
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Top Restaurants</Text>
+
+      <FlatList
+        data={data}
+        keyExtractor={(restaurant) => restaurant.id}
+        renderItem={({ item }) => {
+          return <Restaurant restaurant={item} />
+        }}
+      />
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
   container: {
     marginHorizontal: 25,
     marginVertical: 15,
-    flex: 1,
   },
   header: {
     fontWeight: 'bold',
     fontSize: 20,
     paddingBottom: 10,
-    height: 100,
-    backgroundColor: 'firebrick',
   },
-});
+})
