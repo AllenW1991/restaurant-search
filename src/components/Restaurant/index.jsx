@@ -1,21 +1,27 @@
-import { View, Image, Text, StyleSheet } from 'react-native'
-
+import { View, Image, Text, StyleSheet, TouchableOpacity } from 'react-native'
+import { withNavigation } from 'react-navigation'
 import { elevation } from '../../common/styles'
 
-export default function Restaurant({ restaurant }) {
-  const { image_url, name, rating, price } = restaurant
+function Restaurant({ restaurant, navigation }) {
+  const { image_url, name, rating, price, id } = restaurant
 
   return (
-    <View style={[elevation, styles.container]}>
-      <Image source={{ uri: image_url }} style={styles.image} />
-      <View style={styles.infoContainer}>
-        <Text style={styles.header}>{name}</Text>
-        <View style={styles.info}>
-          <Text style={styles.rating}>{rating}</Text>
-          <Text style={styles.price}>{price}</Text>
+    <TouchableOpacity
+      onPress={() => {
+        navigation.navigate('Restaurant', { id: id })
+      }}
+    >
+      <View style={[elevation, styles.container]}>
+        <Image source={{ uri: image_url }} style={styles.image} />
+        <View style={styles.infoContainer}>
+          <Text style={styles.header}>{name}</Text>
+          <View style={styles.info}>
+            <Text style={styles.rating}>{rating}</Text>
+            <Text style={styles.price}>{price}</Text>
+          </View>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   )
 }
 
@@ -54,3 +60,5 @@ const styles = StyleSheet.create({
     color: 'gold',
   },
 })
+
+export default withNavigation(Restaurant)

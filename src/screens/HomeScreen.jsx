@@ -1,4 +1,5 @@
 import { StatusBar } from 'expo-status-bar'
+import { useState } from 'react'
 import { View, StyleSheet } from 'react-native'
 import Categories from '../components/Categories'
 import Header from '../components/Header'
@@ -7,9 +8,11 @@ import Search from '../components/Search'
 
 export default function HomeScreen() {
   const [term, setTerm] = useState('Burger')
+
   const commonCategories = [
     {
       name: 'Burger',
+
       imgUrl: require('../assets/categoryImg/burger.png'),
     },
     {
@@ -44,8 +47,10 @@ export default function HomeScreen() {
     </View>
   )
 }
+
 const styles = StyleSheet.create({
   container: {
     backgroundColor: 'rgb(253,253,253)',
+    flex: 1,
   },
 })

@@ -7,7 +7,7 @@ export default () => {
     loading: false,
     error: null,
   })
-  const searchRestaurants = async (term) => {
+  const searchRestaurant = async (term) => {
     setResults({ data: null, loading: true, error: null })
 
     try {
@@ -28,5 +28,5 @@ export default () => {
       })
     }
   }
-  return [results, searchRestaurants]
+  return [results, searchRestaurant]
 }
